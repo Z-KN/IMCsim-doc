@@ -179,17 +179,23 @@ Functions</h2></td></tr>
 <tr class="memdesc:a0815c09ef324e6941afeba53c3742bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the MVM.  <br /></td></tr>
 <tr class="separator:a0815c09ef324e6941afeba53c3742bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fc556ec511413b160bc5503b7848658"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#a7fc556ec511413b160bc5503b7848658">compute_relu</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</td></tr>
-<tr class="memdesc:a7fc556ec511413b160bc5503b7848658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the ReLU of one vector.  <br /></td></tr>
+<tr class="memdesc:a7fc556ec511413b160bc5503b7848658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the ReLU of one vector inside a buffer.  <br /></td></tr>
 <tr class="separator:a7fc556ec511413b160bc5503b7848658"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</td></tr>
-<tr class="memdesc:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the addition of two vectors.  <br /></td></tr>
-<tr class="separator:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcd5bda7461e2fe43f6872bc6fa63739"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#adcd5bda7461e2fe43f6872bc6fa63739">compute_sum</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</td></tr>
+<tr class="memdesc:adcd5bda7461e2fe43f6872bc6fa63739"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the sum of one vector inside a buffer.  <br /></td></tr>
+<tr class="separator:adcd5bda7461e2fe43f6872bc6fa63739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c451015d2305b48697e043c4cc145e1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</td></tr>
 <tr class="memdesc:a6c451015d2305b48697e043c4cc145e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the max among one vector.  <br /></td></tr>
 <tr class="separator:a6c451015d2305b48697e043c4cc145e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</td></tr>
+<tr class="memdesc:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the addition of two vectors.  <br /></td></tr>
+<tr class="separator:ae52e40fe4a557a369c2f93cc5fd99e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afaadc4843d8627871c5d06e9eb29402e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#afaadc4843d8627871c5d06e9eb29402e">compute_mul</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t a0)</td></tr>
 <tr class="memdesc:afaadc4843d8627871c5d06e9eb29402e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scalar multiplication.  <br /></td></tr>
 <tr class="separator:afaadc4843d8627871c5d06e9eb29402e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f584a066cef083484dada5c7ee21fc1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#a0f584a066cef083484dada5c7ee21fc1">compute_div</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t a0)</td></tr>
+<tr class="memdesc:a0f584a066cef083484dada5c7ee21fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scalar division.  <br /></td></tr>
+<tr class="separator:a0f584a066cef083484dada5c7ee21fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a987040e5e7ef106745a87e2db9dc77f0" name="a987040e5e7ef106745a87e2db9dc77f0"></a>
@@ -494,7 +500,67 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000003">Todo:</a></b></dt><dd>Not fully correct yet: what if operands not coming from buffer totally? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000004">Todo:</a></b></dt><dd>Not fully correct yet: what if operands not coming from buffer totally? </dd></dl>
+
+</div>
+</div>
+<a id="a0f584a066cef083484dada5c7ee21fc1" name="a0f584a066cef083484dada5c7ee21fc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f584a066cef083484dada5c7ee21fc1">&#9670;&#160;</a></span>compute_div()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void compute_div </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rs1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>a0</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the scalar division. </p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000006">Todo:</a></b></dt><dd>Not fully implemented yet </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
+    <tr><td class="paramname">rd</td><td>The address of the result </td></tr>
+    <tr><td class="paramname">rs1</td><td>The address of the dividend in the register file </td></tr>
+    <tr><td class="paramname">a0</td><td>The value of the divisor </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -604,7 +670,7 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Compute the scalar multiplication. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000004">Todo:</a></b></dt><dd>Not fully implemented yet </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000005">Todo:</a></b></dt><dd>Not fully implemented yet </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
@@ -680,7 +746,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
-    <tr><td class="paramname">rd</td><td>The starting address of the result vector </td></tr>
+    <tr><td class="paramname">rd</td><td>The starting address of the result vector stored in the register file </td></tr>
     <tr><td class="paramname">a0</td><td>The starting index of the row to be activated in this MVM </td></tr>
     <tr><td class="paramname">a1</td><td>The number of rows to be activated in this MVM </td></tr>
     <tr><td class="paramname">a2</td><td>The starting index of the column to be activated in this MVM </td></tr>
@@ -737,7 +803,67 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Compute the ReLU of one vector. </p>
+<p>Compute the ReLU of one vector inside a buffer. </p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000003">Todo:</a></b></dt><dd>determine process at which location? sram or rf </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
+    <tr><td class="paramname">rd</td><td>The starting address of the result vector </td></tr>
+    <tr><td class="paramname">rs1</td><td>The starting address of the vector </td></tr>
+    <tr><td class="paramname">vl</td><td>The number of data to be computed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="adcd5bda7461e2fe43f6872bc6fa63739" name="adcd5bda7461e2fe43f6872bc6fa63739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adcd5bda7461e2fe43f6872bc6fa63739">&#9670;&#160;</a></span>compute_sum()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void compute_sum </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>rs1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>vl</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compute the sum of one vector inside a buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The id of the bank </td></tr>

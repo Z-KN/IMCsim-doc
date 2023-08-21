@@ -126,15 +126,15 @@ APIs</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0" title="Compute the MVM.">compute_mvm()</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#a7fc556ec511413b160bc5503b7848658" title="Compute the ReLU of one vector.">compute_relu()</a>    </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#a7fc556ec511413b160bc5503b7848658" title="Compute the ReLU of one vector inside a buffer.">compute_relu()</a>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#ab93d3dece1be44aa33a275cc6bf9fbed" title="Wait for all the previous instructions to be completed.">fence()</a>    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0" title="Load the data (typically weights) from main memory to the array.">load_array()</a>    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">load_buffer()    </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc" title="Load the input data from the buffer to the input vector.">load_vector()</a>    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">load_buffer_imm()    </td></tr>
+<td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#a0ed137f541939d1527df0dcafb246337" title="Read immediate values &quot;imm&quot; to the input vector.">load_vector_imm()</a>    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><a class="el" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc" title="Load the input data from main memory to the buffer.">load_input()</a>    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -165,23 +165,48 @@ APIs</h2>
 <p>One can implement most convolutional neural networks (CNNs, e.g., VGG, ResNet) using these APIs.</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Examples:</h1>
-<ol type="1">
+<p>Note: all addresses used in parameters in these APIs are in <b>bytes</b>.</p><ol type="1">
+<li>Single-bank MVM computation: <div class="fragment"><div class="line"><span class="comment">// manual mapping</span></div>
+<div class="line"><span class="comment">// compute MVM a (1,33) x b (33,61) = c (1,61)</span></div>
+<div class="line"><span class="comment">// single bank</span></div>
+<div class="line">uint32_t id;</div>
+<div class="line"><span class="keywordtype">id</span> = 0;</div>
+<div class="line">uint32_t bw_wei = 8;</div>
+<div class="line">uint32_t num_row = 33;</div>
+<div class="line">uint32_t num_col = 61;</div>
+<div class="line"><a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(<span class="keywordtype">id</span>, 0, 0, num_row);</div>
+<div class="line"><a class="code hl_function" href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc">load_vector</a>(<span class="keywordtype">id</span>, 0, 0, num_row);</div>
+<div class="line"><span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;num_row;i++){</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a>(<span class="keywordtype">id</span>, 0+i*512/8, 0x400+i*num_col*8/bw_wei, num_col);</div>
+<div class="line">}</div>
+<div class="line"><a class="code hl_function" href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0">compute_mvm</a>(<span class="keywordtype">id</span>,0,0,num_row,0,num_col);</div>
+<div class="line"><a class="code hl_function" href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a>(<span class="keywordtype">id</span>,0,0,num_col);</div>
+<div class="line"><span class="comment">// till now finish one MVM</span></div>
+<div class="line"><a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(<span class="keywordtype">id</span>,0,0x200,num_col);</div>
+<div class="ttc" id="aimc_8c_html_a0815c09ef324e6941afeba53c3742bc0"><div class="ttname"><a href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0">compute_mvm</a></div><div class="ttdeci">static void compute_mvm(uint32_t id, uint32_t rd, uint32_t a0, uint32_t a1, uint32_t a2, uint32_t a3)</div><div class="ttdoc">Compute the MVM.</div><div class="ttdef"><b>Definition</b> imc.c:248</div></div>
+<div class="ttc" id="aimc_8c_html_a3f84e5c590fec1b536c069f8a1eeb9fc"><div class="ttname"><a href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a></div><div class="ttdeci">static void load_input(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the input data from main memory to the buffer.</div><div class="ttdef"><b>Definition</b> imc.c:61</div></div>
+<div class="ttc" id="aimc_8c_html_a6f183c8a8ccbaf61b4f8196e47e62312"><div class="ttname"><a href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a></div><div class="ttdeci">static void store_output(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Store the output data to main memory.</div><div class="ttdef"><b>Definition</b> imc.c:168</div></div>
+<div class="ttc" id="aimc_8c_html_a744faffb0c89d5bd3e7ef58c99ec8b75"><div class="ttname"><a href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a></div><div class="ttdeci">static void store_buffer(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Store the output data to a buffer.</div><div class="ttdef"><b>Definition</b> imc.c:185</div></div>
+<div class="ttc" id="aimc_8c_html_ab68b777b1f1ca1f647c0c25f7dbdeef0"><div class="ttname"><a href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a></div><div class="ttdeci">static void load_array(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the data (typically weights) from main memory to the array.</div><div class="ttdef"><b>Definition</b> imc.c:96</div></div>
+<div class="ttc" id="aimc_8c_html_abd74ce26535c96ae892d8291d220edfc"><div class="ttname"><a href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc">load_vector</a></div><div class="ttdeci">static void load_vector(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the input data from the buffer to the input vector.</div><div class="ttdef"><b>Definition</b> imc.c:79</div></div>
+</div><!-- fragment --></li>
 <li>Multibank MVM computation: <div class="fragment"><div class="line"><span class="keywordtype">int</span> main(){</div>
 <div class="line">    <span class="comment">// manual mapping</span></div>
 <div class="line">    <span class="comment">// compute MVM a (1,1024) x b (1024,128) = c (1,128)</span></div>
 <div class="line">    <span class="comment">// split b into 2 banks</span></div>
 <div class="line">    uint32_t id;</div>
 <div class="line">    <span class="keywordtype">id</span> = 0;</div>
+<div class="line">    <span class="keywordtype">int</span> bw_wei = 4;</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(<span class="keywordtype">id</span>, 0, 0, 512);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc">load_vector</a>(<span class="keywordtype">id</span>, 0, 0, 512);</div>
-<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a>(<span class="keywordtype">id</span>, 0, 0x400, 512*512/4);</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a>(<span class="keywordtype">id</span>, 0, 0x400, 512*512/bw_wei);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0">compute_mvm</a>(<span class="keywordtype">id</span>,0,0,512,0,128);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a>(<span class="keywordtype">id</span>,0,0,128);</div>
 <div class="line">    <span class="comment">// till now finish one MVM</span></div>
 <div class="line">    <span class="keywordtype">id</span> = 1;</div>
-<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(<span class="keywordtype">id</span>, 0, 0+0x40, 512);</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(<span class="keywordtype">id</span>, 0, 512, 512);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc">load_vector</a>(<span class="keywordtype">id</span>, 0, 0, 512);</div>
-<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a>(<span class="keywordtype">id</span>, 0, 0x1400, 512*512/4);</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a>(<span class="keywordtype">id</span>, 0, 0x400+512*512/8, 512*512/bw_wei);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0">compute_mvm</a>(<span class="keywordtype">id</span>, 0,0,512,0,128);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a>(<span class="keywordtype">id</span>, 0,0, 128);</div>
 <div class="line">    <span class="comment">// till now finish another MVM</span></div>
@@ -193,38 +218,32 @@ Examples:</h1>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a>(1,0,0,128,128);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(1,0,0x200,128);</div>
 <div class="line">}</div>
-<div class="ttc" id="aimc_8c_html_a0815c09ef324e6941afeba53c3742bc0"><div class="ttname"><a href="d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0">compute_mvm</a></div><div class="ttdeci">static void compute_mvm(uint32_t id, uint32_t rd, uint32_t a0, uint32_t a1, uint32_t a2, uint32_t a3)</div><div class="ttdoc">Compute the MVM.</div><div class="ttdef"><b>Definition</b> imc.c:249</div></div>
-<div class="ttc" id="aimc_8c_html_a10f61af192b1a0338e903649c46726fe"><div class="ttname"><a href="d6/da2/imc_8c.html#a10f61af192b1a0338e903649c46726fe">tx</a></div><div class="ttdeci">static void tx(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Transmit data (address rs1) from source bank (id) to destination bank (specified by rs2)</div><div class="ttdef"><b>Definition</b> imc.c:203</div></div>
-<div class="ttc" id="aimc_8c_html_a3f84e5c590fec1b536c069f8a1eeb9fc"><div class="ttname"><a href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a></div><div class="ttdeci">static void load_input(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the input data from main memory to the buffer.</div><div class="ttdef"><b>Definition</b> imc.c:62</div></div>
-<div class="ttc" id="aimc_8c_html_a6f183c8a8ccbaf61b4f8196e47e62312"><div class="ttname"><a href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a></div><div class="ttdeci">static void store_output(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Store the output data to main memory.</div><div class="ttdef"><b>Definition</b> imc.c:169</div></div>
-<div class="ttc" id="aimc_8c_html_a744faffb0c89d5bd3e7ef58c99ec8b75"><div class="ttname"><a href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a></div><div class="ttdeci">static void store_buffer(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Store the output data to a buffer.</div><div class="ttdef"><b>Definition</b> imc.c:186</div></div>
-<div class="ttc" id="aimc_8c_html_aa1fec60ab231cf7c0c88668538036505"><div class="ttname"><a href="d6/da2/imc_8c.html#aa1fec60ab231cf7c0c88668538036505">rx</a></div><div class="ttdeci">static void rx(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Receive data from the source bank and store it in the destination bank.</div><div class="ttdef"><b>Definition</b> imc.c:220</div></div>
-<div class="ttc" id="aimc_8c_html_ab68b777b1f1ca1f647c0c25f7dbdeef0"><div class="ttname"><a href="d6/da2/imc_8c.html#ab68b777b1f1ca1f647c0c25f7dbdeef0">load_array</a></div><div class="ttdeci">static void load_array(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the data (typically weights) from main memory to the array.</div><div class="ttdef"><b>Definition</b> imc.c:97</div></div>
-<div class="ttc" id="aimc_8c_html_ab93d3dece1be44aa33a275cc6bf9fbed"><div class="ttname"><a href="d6/da2/imc_8c.html#ab93d3dece1be44aa33a275cc6bf9fbed">fence</a></div><div class="ttdeci">static void fence(uint32_t id)</div><div class="ttdoc">Wait for all the previous instructions to be completed.</div><div class="ttdef"><b>Definition</b> imc.c:233</div></div>
-<div class="ttc" id="aimc_8c_html_abd74ce26535c96ae892d8291d220edfc"><div class="ttname"><a href="d6/da2/imc_8c.html#abd74ce26535c96ae892d8291d220edfc">load_vector</a></div><div class="ttdeci">static void load_vector(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the input data from the buffer to the input vector.</div><div class="ttdef"><b>Definition</b> imc.c:80</div></div>
-<div class="ttc" id="aimc_8c_html_ae52e40fe4a557a369c2f93cc5fd99e92"><div class="ttname"><a href="d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a></div><div class="ttdeci">static void compute_add(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Compute the addition of two vectors.</div><div class="ttdef"><b>Definition</b> imc.c:288</div></div>
+<div class="ttc" id="aimc_8c_html_a10f61af192b1a0338e903649c46726fe"><div class="ttname"><a href="d6/da2/imc_8c.html#a10f61af192b1a0338e903649c46726fe">tx</a></div><div class="ttdeci">static void tx(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Transmit data (address rs1) from source bank (id) to destination bank (specified by rs2)</div><div class="ttdef"><b>Definition</b> imc.c:202</div></div>
+<div class="ttc" id="aimc_8c_html_aa1fec60ab231cf7c0c88668538036505"><div class="ttname"><a href="d6/da2/imc_8c.html#aa1fec60ab231cf7c0c88668538036505">rx</a></div><div class="ttdeci">static void rx(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Receive data from the source bank and store it in the destination bank.</div><div class="ttdef"><b>Definition</b> imc.c:219</div></div>
+<div class="ttc" id="aimc_8c_html_ab93d3dece1be44aa33a275cc6bf9fbed"><div class="ttname"><a href="d6/da2/imc_8c.html#ab93d3dece1be44aa33a275cc6bf9fbed">fence</a></div><div class="ttdeci">static void fence(uint32_t id)</div><div class="ttdoc">Wait for all the previous instructions to be completed.</div><div class="ttdef"><b>Definition</b> imc.c:232</div></div>
+<div class="ttc" id="aimc_8c_html_ae52e40fe4a557a369c2f93cc5fd99e92"><div class="ttname"><a href="d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a></div><div class="ttdeci">static void compute_add(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Compute the addition of two vectors.</div><div class="ttdef"><b>Definition</b> imc.c:322</div></div>
 </div><!-- fragment --></li>
 <li>Maxpool task:</li>
 </ol>
 <p><em>The example has not considered padding. If so, <code>load_rf_imm</code> is needed.</em> </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> main(){</div>
+<div class="line">    <span class="comment">// compute maxpool</span></div>
 <div class="line">    <span class="comment">// using the following APIs to write a maxpool</span></div>
 <div class="line">    <span class="comment">// 4 * 4 matrix, applied to 2 * 2 kernel, stride = 2</span></div>
 <div class="line">    uint32_t length_size = 4;</div>
 <div class="line">    uint32_t kernel_size = 2;</div>
 <div class="line">    uint32_t stride = 2;</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(0, 0, 0, length_size*length_size);</div>
-<div class="line">    output_length_size = (length_size-kernel_size)/stride+1;</div>
-<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;output_length_size;i++){</div>
-<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0;j&lt;output_length_size;j++){</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;(length_size-kernel_size)/stride+1;i++){</div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0;j&lt;(length_size-kernel_size)/stride+1;j++){</div>
 <div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a>(0, 0, length_size*kernel_size*i+kernel_size*j, kernel_size);</div>
-<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a>(0, 0, length_size*kernel_size*i+length_size+kernel_size*j, kernel_size);</div>
-<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a>(0, 0x20+kernel_size*i+j, 0x00, kernel_size*kernel_size);</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a>(0, kernel_size, length_size*kernel_size*i+length_size+kernel_size*j, kernel_size);</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a>(0, 0x100+kernel_size*i+j, 0x00, kernel_size*kernel_size);</div>
 <div class="line">        }</div>
 <div class="line">    }</div>
-<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(0, 0x20, 0x200, output_length_size*output_length_size);</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(0, 0x100, 0x200, 4);</div>
 <div class="line">}</div>
-<div class="ttc" id="aimc_8c_html_a1f50e901c5fe8b09214a201c350ab8b0"><div class="ttname"><a href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a></div><div class="ttdeci">static void load_rf(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the data from the buffer to the register file.</div><div class="ttdef"><b>Definition</b> imc.c:114</div></div>
-<div class="ttc" id="aimc_8c_html_a6c451015d2305b48697e043c4cc145e1"><div class="ttname"><a href="d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a></div><div class="ttdeci">static void compute_max(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Compute the max among one vector.</div><div class="ttdef"><b>Definition</b> imc.c:307</div></div>
+<div class="ttc" id="aimc_8c_html_a1f50e901c5fe8b09214a201c350ab8b0"><div class="ttname"><a href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a></div><div class="ttdeci">static void load_rf(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the data from the buffer to the register file.</div><div class="ttdef"><b>Definition</b> imc.c:113</div></div>
+<div class="ttc" id="aimc_8c_html_a6c451015d2305b48697e043c4cc145e1"><div class="ttname"><a href="d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a></div><div class="ttdeci">static void compute_max(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Compute the max among one vector.</div><div class="ttdef"><b>Definition</b> imc.c:302</div></div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
