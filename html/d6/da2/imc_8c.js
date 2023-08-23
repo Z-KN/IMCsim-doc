@@ -18,7 +18,7 @@ var imc_8c =
     [ "IMC_BASE", "d6/da2/imc_8c.html#a7754138c079c678e177d0a902c0bd31a", null ],
     [ "RAM_BASE", "d6/da2/imc_8c.html#ad35c1036b7f001b47306c58a18329400", null ],
     [ "compute_add", "d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92", null ],
-    [ "compute_div", "d6/da2/imc_8c.html#a0f584a066cef083484dada5c7ee21fc1", null ],
+    [ "compute_div", "d6/da2/imc_8c.html#a2db5fa1720dfbe38c658f503840c3482", null ],
     [ "compute_max", "d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1", null ],
     [ "compute_mul", "d6/da2/imc_8c.html#afaadc4843d8627871c5d06e9eb29402e", null ],
     [ "compute_mvm", "d6/da2/imc_8c.html#a0815c09ef324e6941afeba53c3742bc0", null ],

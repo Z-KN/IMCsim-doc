@@ -193,9 +193,9 @@ Functions</h2></td></tr>
 <tr class="memitem:afaadc4843d8627871c5d06e9eb29402e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#afaadc4843d8627871c5d06e9eb29402e">compute_mul</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t a0)</td></tr>
 <tr class="memdesc:afaadc4843d8627871c5d06e9eb29402e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scalar multiplication.  <br /></td></tr>
 <tr class="separator:afaadc4843d8627871c5d06e9eb29402e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f584a066cef083484dada5c7ee21fc1"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#a0f584a066cef083484dada5c7ee21fc1">compute_div</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t a0)</td></tr>
-<tr class="memdesc:a0f584a066cef083484dada5c7ee21fc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scalar division.  <br /></td></tr>
-<tr class="separator:a0f584a066cef083484dada5c7ee21fc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2db5fa1720dfbe38c658f503840c3482"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/da2/imc_8c.html#a2db5fa1720dfbe38c658f503840c3482">compute_div</a> (uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</td></tr>
+<tr class="memdesc:a2db5fa1720dfbe38c658f503840c3482"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compute the scalar division.  <br /></td></tr>
+<tr class="separator:a2db5fa1720dfbe38c658f503840c3482"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="a987040e5e7ef106745a87e2db9dc77f0" name="a987040e5e7ef106745a87e2db9dc77f0"></a>
@@ -493,9 +493,9 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
-    <tr><td class="paramname">rd</td><td>The starting address of the result vector </td></tr>
-    <tr><td class="paramname">rs1</td><td>The starting address of the first vector </td></tr>
-    <tr><td class="paramname">rs2</td><td>The starting address of the second vector </td></tr>
+    <tr><td class="paramname">rd</td><td>The starting address of the result vector in the register file </td></tr>
+    <tr><td class="paramname">rs1</td><td>The starting address of the first vector in the buffer </td></tr>
+    <tr><td class="paramname">rs2</td><td>The starting address of the second vector in the buffer </td></tr>
     <tr><td class="paramname">vl</td><td>The number of data to be computed </td></tr>
   </table>
   </dd>
@@ -504,8 +504,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a0f584a066cef083484dada5c7ee21fc1" name="a0f584a066cef083484dada5c7ee21fc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f584a066cef083484dada5c7ee21fc1">&#9670;&#160;</a></span>compute_div()</h2>
+<a id="a2db5fa1720dfbe38c658f503840c3482" name="a2db5fa1720dfbe38c658f503840c3482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2db5fa1720dfbe38c658f503840c3482">&#9670;&#160;</a></span>compute_div()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -535,7 +535,13 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>a0</em>&#160;</td>
+          <td class="paramname"><em>rs2</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>vl</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -557,7 +563,8 @@ Functions</h2></td></tr>
     <tr><td class="paramname">id</td><td>The id of the bank </td></tr>
     <tr><td class="paramname">rd</td><td>The address of the result </td></tr>
     <tr><td class="paramname">rs1</td><td>The address of the dividend in the register file </td></tr>
-    <tr><td class="paramname">a0</td><td>The value of the divisor </td></tr>
+    <tr><td class="paramname">rs2</td><td>The address of the divisor in the register file </td></tr>
+    <tr><td class="paramname">vl</td><td>The number of data to be computed </td></tr>
   </table>
   </dd>
 </dl>

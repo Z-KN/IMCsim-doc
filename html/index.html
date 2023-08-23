@@ -216,6 +216,7 @@ Examples:</h1>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ab93d3dece1be44aa33a275cc6bf9fbed">fence</a>(1);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#aa1fec60ab231cf7c0c88668538036505">rx</a>(1,128,0,128);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a>(1,0,0,128,128);</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a>(1,0,0,128);</div>
 <div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(1,0,0x200,128);</div>
 <div class="line">}</div>
 <div class="ttc" id="aimc_8c_html_a10f61af192b1a0338e903649c46726fe"><div class="ttname"><a href="d6/da2/imc_8c.html#a10f61af192b1a0338e903649c46726fe">tx</a></div><div class="ttdeci">static void tx(uint32_t id, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Transmit data (address rs1) from source bank (id) to destination bank (specified by rs2)</div><div class="ttdef"><b>Definition</b> imc.c:202</div></div>
@@ -223,9 +224,8 @@ Examples:</h1>
 <div class="ttc" id="aimc_8c_html_ab93d3dece1be44aa33a275cc6bf9fbed"><div class="ttname"><a href="d6/da2/imc_8c.html#ab93d3dece1be44aa33a275cc6bf9fbed">fence</a></div><div class="ttdeci">static void fence(uint32_t id)</div><div class="ttdoc">Wait for all the previous instructions to be completed.</div><div class="ttdef"><b>Definition</b> imc.c:232</div></div>
 <div class="ttc" id="aimc_8c_html_ae52e40fe4a557a369c2f93cc5fd99e92"><div class="ttname"><a href="d6/da2/imc_8c.html#ae52e40fe4a557a369c2f93cc5fd99e92">compute_add</a></div><div class="ttdeci">static void compute_add(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Compute the addition of two vectors.</div><div class="ttdef"><b>Definition</b> imc.c:322</div></div>
 </div><!-- fragment --></li>
-<li>Maxpool task:</li>
-</ol>
-<p><em>The example has not considered padding. If so, <code>load_rf_imm</code> is needed.</em> </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> main(){</div>
+<li><p class="startli">Max pool task:</p>
+<p class="startli"><em>The example has not considered padding. If so, <code>load_rf_imm</code> is needed.</em> </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> main(){</div>
 <div class="line">    <span class="comment">// compute maxpool</span></div>
 <div class="line">    <span class="comment">// using the following APIs to write a maxpool</span></div>
 <div class="line">    <span class="comment">// 4 * 4 matrix, applied to 2 * 2 kernel, stride = 2</span></div>
@@ -244,7 +244,41 @@ Examples:</h1>
 <div class="line">}</div>
 <div class="ttc" id="aimc_8c_html_a1f50e901c5fe8b09214a201c350ab8b0"><div class="ttname"><a href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a></div><div class="ttdeci">static void load_rf(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Load the data from the buffer to the register file.</div><div class="ttdef"><b>Definition</b> imc.c:113</div></div>
 <div class="ttc" id="aimc_8c_html_a6c451015d2305b48697e043c4cc145e1"><div class="ttname"><a href="d6/da2/imc_8c.html#a6c451015d2305b48697e043c4cc145e1">compute_max</a></div><div class="ttdeci">static void compute_max(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Compute the max among one vector.</div><div class="ttdef"><b>Definition</b> imc.c:302</div></div>
-</div><!-- fragment --> </div></div><!-- PageDoc -->
+</div><!-- fragment --></li>
+<li><p class="startli">Average pool task:</p>
+<p class="startli"><em>The example has not considered padding. If so, <code>load_rf_imm</code> is needed.</em> </p><div class="fragment"><div class="line"><span class="keywordtype">int</span> main(){</div>
+<div class="line">    <span class="comment">// compute maxpool</span></div>
+<div class="line">    <span class="comment">// using the following APIs to write a maxpool</span></div>
+<div class="line">    <span class="comment">// 4 * 4 matrix, applied to 2 * 2 kernel, stride = 2</span></div>
+<div class="line">    uint32_t length_size = 4;</div>
+<div class="line">    uint32_t kernel_size = 2;</div>
+<div class="line">    uint32_t stride = 2;</div>
+<div class="line">    uint32_t bw_act = 8;</div>
+<div class="line">    uint32_t ret_addr = 0x100;</div>
+<div class="line">    uint32_t output_size_x = (length_size-kernel_size)/stride+1;</div>
+<div class="line">    uint32_t output_size_y = (length_size-kernel_size)/stride+1;</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a3f84e5c590fec1b536c069f8a1eeb9fc">load_input</a>(0, 0, 0, length_size*length_size);</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> j=0;j&lt;output_size_y;j++){</div>
+<div class="line">        <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i=0;i&lt;output_size_x;i++){</div>
+<div class="line">            <span class="comment">// compute each scalar here</span></div>
+<div class="line">            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> k=0;k&lt;kernel_size;k++){</div>
+<div class="line">                <a class="code hl_function" href="d6/da2/imc_8c.html#a1f50e901c5fe8b09214a201c350ab8b0">load_rf</a>(0, k, length_size*stride*j+stride*i+length_size*k, kernel_size);</div>
+<div class="line">                <a class="code hl_function" href="d6/da2/imc_8c.html#adcd5bda7461e2fe43f6872bc6fa63739">compute_sum</a>(0, k, k, kernel_size);</div>
+<div class="line">            }</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#adcd5bda7461e2fe43f6872bc6fa63739">compute_sum</a>(0, 0, 0, kernel_size);</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a958d3ed503d6868a1841b3199bcad733">load_rf_imm</a>(0, 1, kernel_size*kernel_size, 1);</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a2db5fa1720dfbe38c658f503840c3482">compute_div</a>(0, 0, 0, 1, 1);</div>
+<div class="line">            <a class="code hl_function" href="d6/da2/imc_8c.html#a744faffb0c89d5bd3e7ef58c99ec8b75">store_buffer</a>(0, ret_addr+output_size_y*j+i, 0, 1);</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">    <a class="code hl_function" href="d6/da2/imc_8c.html#a6f183c8a8ccbaf61b4f8196e47e62312">store_output</a>(0, ret_addr, 0x200, output_size_x*output_size_y);</div>
+<div class="line">}</div>
+<div class="ttc" id="aimc_8c_html_a2db5fa1720dfbe38c658f503840c3482"><div class="ttname"><a href="d6/da2/imc_8c.html#a2db5fa1720dfbe38c658f503840c3482">compute_div</a></div><div class="ttdeci">static void compute_div(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t rs2, uint32_t vl)</div><div class="ttdoc">Compute the scalar division.</div><div class="ttdef"><b>Definition</b> imc.c:361</div></div>
+<div class="ttc" id="aimc_8c_html_a958d3ed503d6868a1841b3199bcad733"><div class="ttname"><a href="d6/da2/imc_8c.html#a958d3ed503d6868a1841b3199bcad733">load_rf_imm</a></div><div class="ttdeci">static void load_rf_imm(uint32_t id, uint32_t rd, uint32_t a0, uint32_t a1)</div><div class="ttdoc">Read immediate values &quot;imm&quot; to the address rd in the register file in the APU.</div><div class="ttdef"><b>Definition</b> imc.c:151</div></div>
+<div class="ttc" id="aimc_8c_html_adcd5bda7461e2fe43f6872bc6fa63739"><div class="ttname"><a href="d6/da2/imc_8c.html#adcd5bda7461e2fe43f6872bc6fa63739">compute_sum</a></div><div class="ttdeci">static void compute_sum(uint32_t id, uint32_t rd, uint32_t rs1, uint32_t vl)</div><div class="ttdoc">Compute the sum of one vector inside a buffer.</div><div class="ttdef"><b>Definition</b> imc.c:285</div></div>
+</div><!-- fragment --> </li>
+</ol>
+</div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
